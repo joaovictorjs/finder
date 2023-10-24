@@ -14,8 +14,8 @@ namespace Finder {
             str_vec m_whitelist, m_blacklist;
 
         protected:
-            bool filter_whitelist(const std::string& a_path);
-            bool filter_blacklist(const std::string& a_path);
+            bool is_in_whitelist(const std::string& a_path);
+            bool is_in_blacklist(const std::string& a_path);
 
         public:
             Filter& set_root_dir(const std::string& a_dir);
