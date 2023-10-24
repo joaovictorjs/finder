@@ -36,4 +36,7 @@ namespace Finder {
         return false;
     }
 
+    bool Filter::filter(const std::string& a_path){
+        return !this->is_in_blacklist(a_path) && this->is_in_whitelist(a_path);
+    }
 }
