@@ -4,5 +4,5 @@ inc = 'include'
 src = meson.source_root() / 'src'
 include = include_directories(inc)
 
-headers = []
+headers = [inc / 'finder.hpp']
 sources = []
