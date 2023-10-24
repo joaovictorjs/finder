@@ -16,4 +16,24 @@ namespace Finder {
         return *this;
     }
 
+    bool Filter::is_in_whitelist(const std::string& a_path){
+        if(this->m_whitelist.empty()) return true;
+
+        for(const auto& value : this->m_whitelist){
+            if(wildcard(value.c_str(), a_path.c_str())) return true;
+        }
+
+        return false;
+    }
+
+    bool Filter::is_in_blacklist(const std::string& a_path){
+        if(this->m_blacklist.empty()) return false;
+
+        for(const auto& value : this->m_blacklist){
+            if(wildcard(value.c_str(), a_path.c_str())) return true;
+        }
+
+        return false;
+    }
+
 }
