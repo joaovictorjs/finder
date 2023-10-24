@@ -31,6 +31,44 @@ class FilterHelper : public Finder::Filter {
         }
 };
 
+TEST(FilterHelper, is_in_whitelist){
+    FilterHelper filter;
+    
+    ASSERT_TRUE(filter.is_in_whitelist("/home"));
+
+    filter.set_whitelist({"/home/Do*"});
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Downloads"));
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Documents"));
+    ASSERT_FALSE(filter.is_in_whitelist("/home/Dump"));
+
+    filter.set_whitelist({"/home/Do*/*.mp?"});
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Downloads/anime.mp4"));
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Downloads/anime.mp3"));
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Documents/anime.mp4"));
+    ASSERT_TRUE(filter.is_in_whitelist("/home/Documents/anime.mp3"));
+    ASSERT_FALSE(filter.is_in_whitelist("/home/Dump/anime.mp4"));
+    ASSERT_FALSE(filter.is_in_whitelist("/home/Dump/anime.mp3"));
+}
+
+TEST(FilterHelper, is_in_blacklist){
+    FilterHelper filter;
+    
+    ASSERT_FALSE(filter.is_in_blacklist("/home"));
+
+    filter.set_blacklist({"/home/Do*"});
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Downloads"));
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Documents"));
+    ASSERT_FALSE(filter.is_in_blacklist("/home/Dump"));
+
+    filter.set_blacklist({"/home/Do*/*.mp?"});
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Downloads/anime.mp4"));
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Downloads/anime.mp3"));
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Documents/anime.mp4"));
+    ASSERT_TRUE(filter.is_in_blacklist("/home/Documents/anime.mp3"));
+    ASSERT_FALSE(filter.is_in_blacklist("/home/Dump/anime.mp4"));
+    ASSERT_FALSE(filter.is_in_blacklist("/home/Dump/anime.mp3"));
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
