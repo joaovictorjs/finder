@@ -5,6 +5,6 @@ src = meson.source_root() / 'src'
 include = include_directories(inc)
 
 headers = [inc / 'finder.hpp']
-sources = []
+sources = [src / 'finder.cpp']
 
 subdir('test')
