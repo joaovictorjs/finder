@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <wildcard.h>
+
 namespace Finder {
     namespace fs = std::filesystem;
     using str_vec = std::vector<std::string>;
