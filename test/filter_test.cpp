@@ -29,11 +29,15 @@ class FilterHelper : public Finder::Filter {
         bool is_in_blacklist(const std::string& a_path){
             return Finder::Filter::is_in_blacklist(a_path);
         }
+
+        bool filter(const std::string& a_path){
+            return Finder::Filter::filter(a_path);
+        }
 };
 
 TEST(FilterHelper, is_in_whitelist){
     FilterHelper filter;
-    
+
     ASSERT_TRUE(filter.is_in_whitelist("/home"));
 
     filter.set_whitelist({"/home/Do*"});
@@ -52,7 +56,7 @@ TEST(FilterHelper, is_in_whitelist){
 
 TEST(FilterHelper, is_in_blacklist){
     FilterHelper filter;
-    
+
     ASSERT_FALSE(filter.is_in_blacklist("/home"));
 
     filter.set_blacklist({"/home/Do*"});
@@ -67,6 +71,22 @@ TEST(FilterHelper, is_in_blacklist){
     ASSERT_TRUE(filter.is_in_blacklist("/home/Documents/anime.mp3"));
     ASSERT_FALSE(filter.is_in_blacklist("/home/Dump/anime.mp4"));
     ASSERT_FALSE(filter.is_in_blacklist("/home/Dump/anime.mp3"));
+}
+
+TEST(FilterHelper, filter){
+    FilterHelper fh;
+
+    ASSERT_TRUE(fh.filter("/home"));
+
+    fh.set_whitelist({"/home/Do*/*.mp?", "*.exe"}).set_blacklist({"*.exe", "*windows*"});
+    ASSERT_TRUE(fh.filter("/home/Downloads/anime.mp4"));
+    ASSERT_TRUE(fh.filter("/home/Downloads/anime.mp3"));
+    ASSERT_TRUE(fh.filter("/home/Documents/anime.mp4"));
+    ASSERT_TRUE(fh.filter("/home/Documents/anime.mp3"));
+    ASSERT_FALSE(fh.filter("/home/Downloads/malware.exe"));
+    ASSERT_FALSE(fh.filter("/home/Documents/malware.exe"));
+    ASSERT_FALSE(fh.filter("/home/Downloads/windows.mp3"));
+    ASSERT_FALSE(fh.filter("/home/Documents/windows.mp4"));
 }
 
 int main(int argc, char** argv) {
