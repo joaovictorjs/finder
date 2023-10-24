@@ -3,12 +3,15 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <system_error>
+#include <functional>
 
 #include <wildcard.h>
 
 namespace Finder {
     namespace fs = std::filesystem;
     using str_vec = std::vector<std::string>;
+    using error_callback = std::function<bool(const std::string&, const std::system_error&)>;
 
     class Filter {
         private:
