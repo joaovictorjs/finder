@@ -27,5 +27,6 @@ namespace Finder {
             Filter& set_root_dir(const std::string& a_dir);
             Filter& set_whitelist(const str_vec& a_whitelist);
             Filter& set_blacklist(const str_vec& a_blacklist);
+            Filter& search(str_vec& a_found, const error_callback& a_error_callback);
     };
 }
