@@ -6,3 +6,5 @@ include = include_directories(inc)
 
 headers = [inc / 'finder.hpp']
 sources = []
+
+subdir('test')
