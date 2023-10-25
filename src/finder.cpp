@@ -1,4 +1,5 @@
 #include "finder.hpp"
+#include <iostream>
 
 namespace Finder {
     Filter& Filter::set_root_dir(const std::string& a_dir){
@@ -38,5 +39,72 @@ namespace Finder {
 
     bool Filter::filter(const std::string& a_path){
         return !this->is_in_blacklist(a_path) && this->is_in_whitelist(a_path);
+    }
+
+    Filter& Filter::search(str_vec& a_found, const error_callback& a_error_callback){
+        fs::directory_iterator iter;
+        std::error_code ec;
+
+        try{
+            iter = fs::directory_iterator(this->m_root_dir);
+        }catch(std::system_error& error){
+            a_error_callback(this->m_root_dir, error);
+            return *this;
+        }
+
+        while(iter != fs::directory_iterator()){
+            fs::path filepath {(*iter).path()};
+            iter.increment(ec);
+
+            if(!fs::is_symlink(filepath) && !fs::is_directory(filepath) && this->filter(filepath) && !ec) {
+                a_found.push_back(filepath);
+            }
+
+            if(ec){
+                if(!a_error_callback(filepath, ec)) break;
+            }
+        }
+
+        return *this;
+    }
+
+
+    Filter& Filter::search_recursive(str_vec& a_found, const error_callback& a_error_callback){
+        fs::recursive_directory_iterator iter, restore;
+        std::error_code ec;
+
+        try{
+            iter = fs::recursive_directory_iterator(this->m_root_dir);
+        }catch(std::system_error& error){
+            a_error_callback(this->m_root_dir, error);
+            return *this;
+        }
+
+        while(iter != fs::recursive_directory_iterator()){
+            restore = iter;
+            fs::path filepath {(*iter).path()};
+            iter.increment(ec);
+
+            if(!fs::is_symlink(filepath) && !fs::is_directory(filepath) && this->filter(filepath) && !ec) {
+                a_found.push_back(filepath);
+            }
+
+            if(ec){ 
+                if(!a_error_callback(filepath, ec)) break;
+                iter = restore;
+                iter.disable_recursion_pending();
+                iter.increment(ec);
+
+                if(ec){
+                    if(!a_error_callback(filepath, ec)) break;
+                    iter = restore;
+                    iter.pop(ec);
+
+                    if(ec) break;
+                }
+            }
+        }
+
+        return *this;
     }
 }
