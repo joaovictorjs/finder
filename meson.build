@@ -8,3 +8,4 @@ headers = [inc / 'finder.hpp']
 sources = [src / 'finder.cpp']
 
 subdir('test')
+subdir('example')
