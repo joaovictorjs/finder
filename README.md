@@ -54,3 +54,25 @@ executable(
   dependencies: dependency('wildest-card')
 )
 ```
+
+## 🛠️ Installation
+
+- Getting the library from source:
+
+```bash
+git clone https://github.com/joaovictorjs/finder
+```
+
+- Setup and compile (meson required):
+
+```bash
+cd finder &&
+meson setup --prefix=/usr --buildtype=release --wipe build &&
+meson compile -C build
+```
+
+- Finally, install the library:
+
+``` bash
+meson install -C build
+```
