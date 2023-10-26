@@ -76,3 +76,8 @@ meson compile -C build
 ``` bash
 meson install -C build
 ```
+
+## 🧪 Testing
+```bash
+meson test -C build
+```
