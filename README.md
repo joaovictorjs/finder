@@ -5,6 +5,7 @@ An easy-to-use C++ library for finding files in the system
 - [Example](#-example)
 - [Installation](#%EF%B8%8F-installation)
 - [Testing](#-testing)
+- [Dependencies](#-dependencies)
 
 ## 💡 Example
 __Purpose:__ write a software that finds all `.conf` files under `/home` directory
@@ -81,3 +82,7 @@ meson install -C build
 ```bash
 meson test -C build
 ```
+
+## 📚 Dependencies
+
+- [wildest-card](https://github.com/QtRoS/wildest-card)
