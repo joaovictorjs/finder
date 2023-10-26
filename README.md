@@ -3,7 +3,7 @@ An easy-to-use C++ library for finding files in the system
 
 ## 📖 Summary
 - [Example](#-example)
-- [Installation](#-installation)
+- [Installation](#%EF%B8%8F-installation)
 - [Testing](#-testing)
 
 ## 💡 Example
